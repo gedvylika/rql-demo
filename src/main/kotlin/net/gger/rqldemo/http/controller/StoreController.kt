@@ -1,11 +1,10 @@
 package net.gger.rqldemo.http.controller
 
 import net.gger.rqldemo.entity.DemoDataItem
-import net.gger.rqldemo.exception.CanNotQueryDataItemsException
 import net.gger.rqldemo.http.payload.DemoDataItemPayload
 import net.gger.rqldemo.http.resource.QueryDemoDataItemResource
 import net.gger.rqldemo.service.DemoDataItemService
-import net.gger.rqldemo.service.contract.DemoDataItemServiceQueryResponse
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 
@@ -16,16 +15,13 @@ class StoreController(
 ) {
 
     @GetMapping
-    fun queryDemoDataItem(@RequestParam query: String): QueryDemoDataItemResource {
-
-        return when (val response = demoDataItemService.query()) {
-            is DemoDataItemServiceQueryResponse.Success -> QueryDemoDataItemResource.fromDataItemList(response.result)
-            is DemoDataItemServiceQueryResponse.Failure -> throw CanNotQueryDataItemsException(response.error.message)
-         }
+    @ResponseBody
+    fun queryDemoDataItem(@RequestParam query: String?): QueryDemoDataItemResource {
+        return QueryDemoDataItemResource.fromDataItemList(demoDataItemService.query())
     }
 
     @PostMapping
-    fun insertDemoDataItem(@RequestBody payloadItem: DemoDataItemPayload) {
+    fun insertDemoDataItem(@RequestBody payloadItem: DemoDataItemPayload): ResponseEntity<String> {
         demoDataItemService.insert(
             DemoDataItem(
                 id = payloadItem.id,
@@ -35,5 +31,6 @@ class StoreController(
                 timestamp = payloadItem.timestamp
             )
         )
+        return ResponseEntity.ok().build()
     }
 }
