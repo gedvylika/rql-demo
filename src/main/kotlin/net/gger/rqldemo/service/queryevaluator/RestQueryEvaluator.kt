@@ -4,7 +4,6 @@ import net.gger.rqldemo.commons.Stack
 import net.gger.rqldemo.commons.pop
 import net.gger.rqldemo.commons.push
 import net.gger.rqldemo.exception.BadSyntaxException
-import net.gger.rqldemo.exception.UnsupportedOperationForSpecification
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Predicate
