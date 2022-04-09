@@ -1,26 +1,20 @@
 package net.gger.rqldemo.service
 
-import net.gger.rqldemo.entity.DemoDataItem
-import net.gger.rqldemo.repository.DemoDataItemRepository
+import net.gger.rqldemo.entity.DataItem
+import net.gger.rqldemo.repository.DataItemRepository
+import net.gger.rqldemo.repository.DataItemSearchDAO
 import org.springframework.stereotype.Service
 
 @Service
 class DemoDataItemService(
-    private val demoDataItemRepository: DemoDataItemRepository
+    private val dataItemRepository: DataItemRepository,
+    private val dateItemSearchDAO: DataItemSearchDAO
 ) {
-    fun insert(demoDataItem: DemoDataItem) {
-        demoDataItemRepository.save(demoDataItem)
+    fun insert(dataItem: DataItem) {
+        dataItemRepository.save(dataItem)
     }
 
-    fun query(): List<DemoDataItem> {
-        return listOf(
-            DemoDataItem(
-                id = "1",
-                title = "",
-                content = "",
-                views = 0,
-                timestamp = 0L
-            )
-        )
+    fun query(query: String): List<DataItem>? {
+        return dateItemSearchDAO.findDataItemsByQuery(query)
     }
 }

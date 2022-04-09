@@ -1,8 +1,8 @@
 package net.gger.rqldemo.http.controller
 
-import net.gger.rqldemo.entity.DemoDataItem
-import net.gger.rqldemo.http.payload.DemoDataItemPayload
-import net.gger.rqldemo.http.resource.QueryDemoDataItemResource
+import net.gger.rqldemo.entity.DataItem
+import net.gger.rqldemo.http.payload.DataItemPayload
+import net.gger.rqldemo.http.resource.QueryDataItemResource
 import net.gger.rqldemo.service.DemoDataItemService
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -16,14 +16,16 @@ class StoreController(
 
     @GetMapping
     @ResponseBody
-    fun queryDemoDataItem(@RequestParam query: String?): QueryDemoDataItemResource {
-        return QueryDemoDataItemResource.fromDataItemList(demoDataItemService.query())
+    fun queryDataItem(@RequestParam query: String): QueryDataItemResource {
+        return QueryDataItemResource.fromDataItemList(
+            demoDataItemService.query(query)
+        )
     }
 
     @PostMapping
-    fun insertDemoDataItem(@RequestBody payloadItem: DemoDataItemPayload): ResponseEntity<String> {
+    fun insertDataItem(@RequestBody payloadItem: DataItemPayload): ResponseEntity<String> {
         demoDataItemService.insert(
-            DemoDataItem(
+            DataItem(
                 id = payloadItem.id,
                 title = payloadItem.title,
                 content = payloadItem.content,

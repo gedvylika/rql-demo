@@ -1,8 +1,8 @@
 package net.gger.rqldemo.http.resource
 
-import net.gger.rqldemo.entity.DemoDataItem
+import net.gger.rqldemo.entity.DataItem
 
-data class ResponseDemoDataItem(
+data class ResponseDataItem(
     val id: String,
     val title: String,
     val content: String,
@@ -12,8 +12,8 @@ data class ResponseDemoDataItem(
 ) {
     companion object {
         // Response Item factory
-        fun fromDataItem(item: DemoDataItem): ResponseDemoDataItem {
-            return ResponseDemoDataItem(
+        fun fromDataItem(item: DataItem): ResponseDataItem {
+            return ResponseDataItem(
                 id = item.id,
                 title = item.title,
                 content = item.content,
@@ -25,15 +25,15 @@ data class ResponseDemoDataItem(
 
 }
 
-data class QueryDemoDataItemResource(
-    val items: List<ResponseDemoDataItem>
+data class QueryDataItemResource(
+    val items: List<ResponseDataItem>
 
 ) {
     companion object {
         // Query Resource factory
-        fun fromDataItemList(itemList: List<DemoDataItem>): QueryDemoDataItemResource {
-            return QueryDemoDataItemResource(
-                items = itemList.map { ResponseDemoDataItem.fromDataItem(it) }
+        fun fromDataItemList(itemList: List<DataItem>?): QueryDataItemResource {
+            return QueryDataItemResource(
+                items = itemList?.map { ResponseDataItem.fromDataItem(it) } ?: listOf()
             )
         }
     }

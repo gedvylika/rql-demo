@@ -4,7 +4,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "demo_data_item")
-data class DemoDataItem(
+data class DataItem(
     @Id
     @Column(name = "id", nullable = false)
     val id: String,

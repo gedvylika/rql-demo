@@ -1,6 +1,6 @@
 package net.gger.rqldemo.http.payload
 
-data class DemoDataItemPayload(
+data class DataItemPayload(
     val id: String,
     val title: String,
     val content: String,

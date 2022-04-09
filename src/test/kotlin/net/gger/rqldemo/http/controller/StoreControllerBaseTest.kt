@@ -1,14 +1,13 @@
 package net.gger.rqldemo.http.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import net.gger.rqldemo.entity.DemoDataItem
+import net.gger.rqldemo.entity.DataItem
 import net.gger.rqldemo.service.DemoDataItemService
 import org.junit.jupiter.api.Test
 import org.hamcrest.Matchers.containsString
 
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
@@ -20,7 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType.APPLICATION_JSON
 
 @WebMvcTest(StoreController::class)
-internal class StoreControllerTest {
+internal class StoreControllerBaseTest {
 
     @Autowired
     private lateinit var mockMvc: MockMvc
@@ -28,8 +27,7 @@ internal class StoreControllerTest {
     @MockBean
     private lateinit var demoDataItemService: DemoDataItemService
 
-
-    private val testDataItem = DemoDataItem(
+    private val testDataItem = DataItem(
         id = "1",
         title = "title",
         content = "content",
@@ -37,26 +35,25 @@ internal class StoreControllerTest {
         timestamp = 0L
     )
 
+    val objectMapper = ObjectMapper()
+    val testDataItemJson = objectMapper.writeValueAsString(testDataItem)
+
     @Test
     fun queryDemoDataItem() {
-        Mockito.`when`(demoDataItemService.query()).thenReturn(listOf(testDataItem));
+        Mockito.`when`(demoDataItemService.query("test")).thenReturn(listOf(testDataItem));
 
         this.mockMvc
-            .perform(get("/store"))
-            .andDo(print())
-            .andExpect(status().isOk())
-            .andExpect(content().string(containsString("""{"items":[{"id":"1","title":"title","content":"content","views":0,"timestamp":0}]}""")));
+            .perform(get("/store").param("query", "test"))
+            .andExpect(status().isOk)
+            .andExpect(content().string(containsString(testDataItemJson)));
     }
 
     @Test
     fun insertDemoDataItem() {
-        val objectMapper = ObjectMapper()
-        val requestJson = objectMapper.writeValueAsString(testDataItem)
         this.mockMvc
             .perform(
-                post("/store").contentType(APPLICATION_JSON).content(requestJson)
+                post("/store").contentType(APPLICATION_JSON).content(testDataItemJson)
             )
-            .andDo(print())
-            .andExpect(status().isOk())
+            .andExpect(status().isOk)
     }
 }
