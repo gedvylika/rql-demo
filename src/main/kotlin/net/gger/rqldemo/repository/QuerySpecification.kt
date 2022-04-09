@@ -2,7 +2,7 @@ package net.gger.rqldemo.repository
 
 
 import net.gger.rqldemo.commons.pop
-import net.gger.rqldemo.entity.exception.UnsupportedOperationForSpecification
+import net.gger.rqldemo.exception.UnsupportedOperationForSpecification
 import net.gger.rqldemo.service.queryevaluator.EvaluationItem
 import net.gger.rqldemo.service.queryevaluator.SearchCriteria
 import net.gger.rqldemo.service.queryevaluator.SearchOperation

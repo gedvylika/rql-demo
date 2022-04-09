@@ -3,6 +3,8 @@ package net.gger.rqldemo.service.queryevaluator
 import net.gger.rqldemo.commons.Stack
 import net.gger.rqldemo.commons.pop
 import net.gger.rqldemo.commons.push
+import net.gger.rqldemo.exception.BadSyntaxException
+import net.gger.rqldemo.exception.UnsupportedOperationForSpecification
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Predicate
@@ -67,11 +69,10 @@ class RestQueryEvaluator<T>(
                             )
                         )
                         // Push all partial evaluations from param stack back to evaluation
-                        for (partial in paramStack.filter { it is EvaluationItem.PartialEvaluation }) {
+                        for (partial in paramStack.filterIsInstance<EvaluationItem.PartialEvaluation>()) {
                             evaluationStack.push(partial)
                         }
                         paramStack.clear()
-
                     }
                 }
 
@@ -84,8 +85,10 @@ class RestQueryEvaluator<T>(
             toEvaluate = evaluationStack.pop() // Get next item
         }
 
-        val lastItem: EvaluationItem? = paramStack.pop()
-        return (lastItem as EvaluationItem.PartialEvaluation).predicate
+        return when (val lastItem: EvaluationItem? = paramStack.pop()) {
+            is EvaluationItem.PartialEvaluation -> lastItem.predicate
+            else -> throw BadSyntaxException("Could not parse given query")
+        }
     }
 
     fun evaluateQuery(query: String): Predicate {

@@ -15,7 +15,6 @@ class DataItemSearchDAO(
 ){
 
     fun findDataItemsByQuery(queryParam: String): List<DataItem>? {
-
         val builder = em.criteriaBuilder
         val query: CriteriaQuery<DataItem> = builder.createQuery(DataItem::class.java)
         val variableRoot: Root<DataItem?> = query.from(DataItem::class.java)

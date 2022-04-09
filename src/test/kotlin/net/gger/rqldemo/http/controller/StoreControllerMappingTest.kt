@@ -19,7 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType.APPLICATION_JSON
 
 @WebMvcTest(StoreController::class)
-internal class StoreControllerBaseTest {
+internal class StoreControllerMappingTest {
 
     @Autowired
     private lateinit var mockMvc: MockMvc

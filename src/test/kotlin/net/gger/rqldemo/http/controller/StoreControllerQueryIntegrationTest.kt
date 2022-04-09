@@ -194,4 +194,13 @@ internal class StoreControllerQueryIntegrationTest {
         assertEquals(0, result.body?.items?.size)
     }
 
+
+    @Test
+    fun `test querying with unsupported syntax`() {
+        val query = """AAAAAAAAAAA!!!!!!(views,2)"""
+        val result = restTemplate.getForEntity("/store?query=$query", String::class.java)
+
+        assertNotNull(result)
+        assertEquals(HttpStatus.BAD_REQUEST, result?.statusCode)
+    }
 }

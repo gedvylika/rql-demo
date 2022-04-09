@@ -1,13 +1,13 @@
 package net.gger.rqldemo.service.queryevaluator
 
 enum class SearchOperation(val parameterCount: Int) {
-    NOT (1),
+    NOT(1),
 
-    AND (2),
-    OR (2),
-    EQUAL (2),
-    GREATER_THAN (2),
-    LESS_THAN (2),
+    AND(2),
+    OR(2),
+    EQUAL(2),
+    GREATER_THAN(2),
+    LESS_THAN(2),
 
     UNRECOGNIZED_OPERATION(0);
 
@@ -24,10 +24,5 @@ enum class SearchOperation(val parameterCount: Int) {
                 else -> UNRECOGNIZED_OPERATION
             }
         }
-
-        fun getParamCount(input: SearchOperation): Int {
-            return input.parameterCount
-        }
     }
-
 }
